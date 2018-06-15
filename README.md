@@ -1,5 +1,9 @@
-# VOC
+# pytorch-fcn 
 
-http://groups.csail.mit.edu/vision/SUN/
+Pytorch implementation of [Fully Convolutional Networks](https://arxiv.org/abs/1411.4038v2)
 
-https://github.com/mprat/pascal-voc-python
+
+## requirements
+
+- pytorch 0.31
+- python 3.5
