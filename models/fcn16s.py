@@ -106,7 +106,6 @@ class FCN16s(nn.Module):
         # computed on top of conv7 (convolutionalized fc7) at stride 
         # 32 by adding a 2× upsampling layer and summing both predic-
         # tions."""
-
         pool5_output = self.score_pool5(output)
         pool5_output = self.upscore2x(pool5_output)
         fused_output = pool5_output + pool4_output[:, :, 5 : 5 + pool5_output.size()[2] + 5 : 5 + pool5_output.size()[3]]
