@@ -66,11 +66,17 @@ class FCN32s(nn.Module):
             nn.Dropout2d()
         )
 
+        # """We append a 1 × 1 convolution with channel 
+        # dimension 21 to predict scores for each of 
+        # the PASCAL classes (including background) 
+        # at each of the coarse output locations, 
+        # followed by a deconvolution layer to bilinearly 
+        # upsample the coarse outputs to pixel-dense outputs
+        # as described in Section 3.3."""
+
         self.score = nn.Sequential(
             nn.Conv2d(4096, n_class, 1)
         )
-
-        #transpose convolution
         self.upscore = nn.ConvTranspose2d(n_class, n_class, 64, stride=32, bias=False)
 
 
@@ -85,14 +91,8 @@ class FCN32s(nn.Module):
         output = self.score(output)
         output = self.upscore(output)
 
-        output = output[:, :, 19 : 19 + x.size()[2], 19:19 + x.size()[3]]
+        output = output[:, :, 19 : 19 + x.size()[2], 19 : 19 + x.size()[3]]
         return output
 
 
 
-#image = torch.Tensor(3, 300, 500)
-#print(image.size())
-#
-#fcn32s= FCN32s()
-#output = fcn32s(Variable(image.view(1, 3, 300, 500)))
-#print(output.size())
