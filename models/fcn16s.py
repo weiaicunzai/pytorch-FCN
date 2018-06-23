@@ -87,7 +87,7 @@ class FCN16s(nn.Module):
         )
 
 
-    def foward(self, x):
+    def forward(self, x):
         output = self.conv_1(x)
         output = self.conv_2(output)
         output = self.conv_3(output)
@@ -108,14 +108,13 @@ class FCN16s(nn.Module):
         # tions."""
         pool5_output = self.score_pool5(output)
         pool5_output = self.upscore2x(pool5_output)
-        fused_output = pool5_output + pool4_output[:, :, 5 : 5 + pool5_output.size()[2] + 5 : 5 + pool5_output.size()[3]]
+        fused_output = pool5_output + pool4_output[:, :, 5 : 5 + pool5_output.size()[2], 5 : 5 + pool5_output.size()[3]]
 
         # """Finally, the stride 16 predictions
         # are upsampled back to the image."""
-        output = self.self.upscore16x(fused_output)
+        output = self.upscore16x(fused_output)
         output = output[:, :, 27 : 27 + x.size()[2], 27 : 27 + x.size()[3]] #crop the output to be the same size as input
         return output
-
 
 
 
